@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+streamlit
+pandas
+openpyxl
+requests
+openai
+python-multipart
+groq
+load_dotenv
