@@ -1,1 +1,2 @@
-Hi here us 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
+echo 'export GROQ_API_KEY="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"' >> ~/.bashrc
+
