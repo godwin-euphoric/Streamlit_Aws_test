@@ -1,0 +1,367 @@
+Basics	How End User Feedback is Fed back into Agent Learning - Explore it and add
+Basics	Go through Each Instagram videos noted on AI and Explore it and its content. If further needed add in excel 
+AI System Design & Architecture (CRITICAL)	"LLM pipeline architecture patterns
+Trade-offs (latency vs cost vs accuracy)
+Microservices architecture for AI
+Event-driven architecture (queues, async processing)"
+Agent Design (Advanced Concepts)	"Planning vs reactive agents
+Tool-calling architecture (how agents decide tools)
+Memory design (short-term vs long-term)
+Multi-agent communication patterns
+Task decomposition strategies"
+Evaluation & Testing (Missing Completely)	"LLM evaluation techniques (qualitative + quantitative)
+Prompt testing strategies
+Agent success metrics
+Human-in-the-loop evaluation"
+Safety & Guardrails	"Prompt injection attacks
+Output validation/filtering
+Data privacy considerations
+Role-based access control for AI systems"
+Cost Optimization	"Token usage optimization
+Model selection strategy (when to use which model)
+Caching strategies
+Cost vs performance trade-offs"
+Production & Deployment (Needs Depth)	"CI/CD for AI systems
+Monitoring & observability
+Logging and tracing for LLM apps
+A/B testing for prompts/models
+Failure handling & retries"
+Infrastructure & Backend (Important Gap)	
+Core Engineering Foundations	"Environment variables & secrets management
+HTTP / REST API fundamentals
+API clients (like requests / httpx)
+Data validation using Pydantic
+
+👉 These are must-have for any real-world agent/backend"
+LLM Behavior Control (Very Important Gap)	"Sampling parameters:
+Temperature
+Top-p
+Output determinism vs creativity control
+
+👉 This is critical for production stability"
+Agent Reliability Engineering	"Structured output parsing
+Error recovery loops
+Retry strategies
+Agent state management patterns"
+Human-in-the-Loop (HITL)	"Approval workflows
+Escalation design
+Human override patterns
+
+👉 Mandatory for enterprise systems"
+Security (Deeper Layer Missing Earlier)	"Identity & authentication:
+OAuth
+JWT
+API security patterns"
+Async & Background Processing	"Task queues (Celery, Redis)
+Long-running agent execution
+Async workflows
+
+👉 Required for scalable agent systems"
+Multi-Agent Intelligence Patterns	"Consensus / voting between agents
+Conflict resolution strategies"
+missing items 	"Environment variables / secrets management
+HTTP/REST API basics + httpx/requests
+Pydantic data validation (mentioned in FastAPI entry but not as a standalone topic)
+Temperature/top-p/sampling parameters
+Hallucination mitigation strategies
+Fine-tuning vs RAG trade-off decision framework
+Structured output parsing + error recovery loops
+Agent state management patterns
+Human-in-the-loop (HITL) design
+Prompt injection & guardrails / security
+Task queuing for long-running agents (Celery/Redis)
+Consensus & voting between agents
+OAuth/JWT / identity management (noted in Agent Creation sheet but not Basics)
+GitHub Actions CI/CD
+Cost monitoring & token budget optimization
+API rate limiting & throttling
+Agent evaluation & benchmarking (RAGAS)
+Enterprise AI architecture patterns
+AI ethics, bias & responsible AI frameworks
+NL2SQL as a structured learning topic (you have the Dileep problem but no formal coverage)"
+missing items 	"1. Structured Outputs & JSON Mode
+
+Detail:
+Pydantic models and the Instructor library are essential for reliable tool usage. Without constrained decoding, agents often return malformed JSON, which breaks downstream processes.
+
+2. Agent State Persistence (DB-backed)
+
+Detail:
+Long-running agents must handle crashes and restarts. In-memory state is lost on failure, and there is no implementation for persisting agent state in databases like PostgreSQL, Redis, or SQLite across sessions.
+
+3. Context Window Management & Compression
+
+Detail:
+Agents accumulate history and hit token limits. Without strategies like summarization, sliding windows, or selective pruning, Phase 2 projects may silently degrade.
+
+4. Agent Debugging & Trace Inspection
+
+Detail:
+When multi-agent systems produce incorrect outputs, identifying the failure point requires structured trace inspection. Currently, no debugging workflow is documented.
+
+5. API Gateway & Rate Limit Management
+
+Detail:
+At scale, LLM rate limits can cause cascading failures. There is no implementation of token bucket strategies, exponential backoff, or multi-provider failover (e.g., OpenAI → Anthropic → Bedrock).
+
+6. Data Privacy & PII Handling in Agents
+
+Detail:
+Agents process sensitive user data sent to third-party APIs. There is no coverage of PII detection/redaction before API calls, GDPR-compliant logging, or data residency handling.
+
+7. Agent Unit & Integration Testing
+
+Detail:
+While LLM-as-judge evaluation exists, there is no guidance on unit testing tools, mocking LLM responses in CI, or building integration tests for full multi-agent workflows.
+
+8. Streaming Agent Responses to UI
+
+Detail:
+Users expect real-time streaming and intermediate outputs. Although FastAPI is mentioned, streaming via SSE or WebSockets for live UIs is not covered.
+
+9. Tool Reliability & Retry / Fallback Logic
+
+Detail:
+Tools can fail due to timeouts, 404s, or execution errors. There is no implementation for retry mechanisms, fallback strategies, or graceful degradation.
+
+10. Computer Use / Browser Agents
+
+Detail:
+Advanced capabilities like Anthropic’s Computer Use API and screenshot-action loops are emerging. Web navigation is introduced too late (Phase 5) and should align with multi-agent systems earlier.
+
+11. Per-run Cost Attribution & Budgeting
+
+Detail:
+While cost optimization is discussed, tracking token costs per agent run, user, or task type for billing and budgeting is not addressed.
+
+12. Agent Design Patterns Catalogue
+
+Detail:
+There is no reference to established patterns like Plan-and-Execute, LATS, Reflexion, Self-Ask, or Skeleton-of-Thought—key for architectural discussions and design reviews.
+
+13. Completion Status Column (Skills Sheet)
+
+Detail:
+The Skills sheet lacks a way to track completed skills. Without a status column, it acts as a reference rather than a progress tracker.
+
+14. URL / Hyperlink Column (Resources Sheet)
+
+Detail:
+The resources sheet lists items without links, requiring manual searches. Adding a URL column would make it actionable.
+
+15. SQL Agents & Structured Data Tools
+
+Detail:
+Text-to-SQL is a major enterprise use case. Tools like LangChain SQLDatabaseChain and Vanna.ai are not included despite being production-ready.
+
+16. Voice & Multimodal Agent Interfaces
+
+Detail:
+Audio (Whisper + TTS) and vision-based agents (Claude Vision, GPT-4V) are growing rapidly and should be included in Phase 5 specializations.
+
+17. Estimated API Cost per Phase
+
+Detail:
+Running agent experiments (especially multi-agent systems and fine-tuning) incurs real API costs. Learners need upfront budgeting guidance.
+
+18. Prerequisites / Dependency Map
+
+Detail:
+There is no structured dependency mapping (e.g., “complete X before Y”). Learners lack guidance on foundational knowledge when skipping or reordering phase"
+General 	"🚨 1️⃣ NO RETRY / FAILURE HANDLING LAYER
+
+Right now:
+
+If SQL fails ❌
+If API fails ❌
+If DB fails ❌
+
+👉 Flow breaks
+
+Add:
+Retry mechanism
+Fallback logic
+
+👉 Example:
+
+If SQL fails → regenerate SQL
+If DB fails → retry with backoff
+🚨 2️⃣ NO MEMORY / CONTEXT MANAGEMENT
+
+Your system is:
+
+Stateless right now
+
+👉 Missing:
+
+Conversation memory
+Query history
+Add:
+Session memory
+Context store
+
+👉 Very important for:
+
+follow-up queries
+agent intelligence
+🚨 3️⃣ NO CACHING LAYER
+
+Every query → full pipeline ❌
+
+👉 This is costly + slow
+
+Add:
+Cache layer (Redis / in-memory)
+
+👉 Example:
+
+Same query → return cached result
+🚨 4️⃣ NO SECURITY LAYER
+
+Critical for production ⚠️
+
+Missing:
+
+Authentication
+Authorization
+Query restrictions
+
+👉 Especially dangerous:
+
+SQL generation agent
+🚨 5️⃣ NO DATA GOVERNANCE CONTROL
+
+You mentioned AI governance but missing:
+
+Row-level access
+Column masking
+Sensitive data handling
+
+👉 Add between:
+SQL Agent → Data Fetch Agent
+
+🚨 6️⃣ NO FEEDBACK LOOP
+
+System generates result… then what?
+
+👉 Missing:
+
+User feedback
+Learning loop
+Add:
+Feedback → improve prompts / models
+🚨 7️⃣ NO MODEL MANAGEMENT
+
+You are using agents, but:
+
+Missing:
+
+Model versioning
+Prompt versioning
+A/B testing
+🚨 8️⃣ NO LATENCY / COST CONTROL
+
+LLM systems can become expensive 💸
+
+Add:
+
+Token tracking
+Cost monitoring
+Timeout strategy
+🧠 Ideal Improved Flow (Simple)
+
+👉 Add these 5 blocks:
+
+Memory Layer
+Retry + Error Handling Layer
+Security & Governance Layer
+Caching Layer
+Feedback Loop"
+General 	Short Term / Long Term Memory for Agents
+vs shortcuts	Prompt Caching Exploration
+Research More on Stop Sequence	
+Explore these things , if these are not implemented in Agent1 - Implement them 	"""Enhance the Agent1 in terms of Quality not in terms of Technical Stuff
+1. Enhance the Quality, like noting down the issues in it and fixing it or improving the Quality
+2. Enhance the Product like, it recreates whenever you run it but, it checks for early outputs and avoid duplicates and stores it also, refine the existing items
+3. Create a Model with training it with cinema related stuffs and use that as base llm (If Needed)
+4. Create a knowledge base with all these items created or training the model back recursively based on these explore and then create a Cinema GPT""
+Deploy your Agent in Hugging Face - Clouds, Azure, GCP, AWS (Learn Deep)
+Add Identity Management and Make it Multi User
+Implement Tracability, Obserbality to your Project and Analyse
+""Implement Notes from 
+Production & Deployment (Needs Depth)
+Infrastructure & Backend (Important Gap)
+Core Engineering Foundations
+LLM Behavior Control (Very Important Gap)
+Agent Reliability Engineering
+Human-in-the-Loop (HITL)
+Security (Deeper Layer Missing Earlier)
+Async & Background Processing
+Multi-Agent Intelligence Patterns""
+Do it end to end and publish it to Cloud
+Give it to People for use
+Note down the Productions issues we might get and fix it
+Research in Terms of Scalability and Note the Improvments we can implement
+From top to End , Note as Steps for creation of a New Agent - which can be used a template information for next agent
+Create Agents as per Real use  - Like whatspp Monitor"
+Explore these things , if these are not implemented in Agent1 - Implement them 	"""Enhance the Agent1 in terms of Quality not in terms of Technical Stuff
+1. Enhance the Quality, like noting down the issues in it and fixing it or improving the Quality
+2. Enhance the Product like, it recreates whenever you run it but, it checks for early outputs and avoid duplicates and stores it also, refine the existing items
+3. Create a Model with training it with cinema related stuffs and use that as base llm (If Needed)
+4. Create a knowledge base with all these items created or training the model back recursively based on these explore and then create a Cinema GPT""
+Deploy your Agent in Hugging Face - Clouds, Azure, GCP, AWS (Learn Deep)
+Add Identity Management and Make it Multi User
+Implement Tracability, Obserbality to your Project and Analyse
+""Implement Notes from 
+Production & Deployment (Needs Depth)
+Infrastructure & Backend (Important Gap)
+Core Engineering Foundations
+LLM Behavior Control (Very Important Gap)
+Agent Reliability Engineering
+Human-in-the-Loop (HITL)
+Security (Deeper Layer Missing Earlier)
+Async & Background Processing
+Multi-Agent Intelligence Patterns""
+Do it end to end and publish it to Cloud
+Give it to People for use
+Note down the Productions issues we might get and fix it
+Research in Terms of Scalability and Note the Improvments we can implement
+From top to End , Note as Steps for creation of a New Agent - which can be used a template information for next agent
+Create Agents as per Real use  - Like whatspp Monitor"
+Tools 	Explore Cline
+Tools 	explore Claude Cowork
+Tools 	Explore Cursor
+Others	https://docs.cloud.google.com/architecture/choose-design-pattern-agentic-ai-system
+Others	https://www.linkedin.com/posts/santanu-chakraborty-41962aa_contracts-should-accelerate-business-not-activity-7419462674696048640
+Others	https://www.linkedin.com/posts/santanu-chakraborty-41962aa_contracts-should-accelerate-business-not-activity-7419462674696048640
+Architect	AI Architect Course from Udemy
+Use cases & Approach	Explore internet and make a list (Important)
+OThers	Explore Anupam architecture and fit into learning (Important)
+OThers	Explore Siddanth architecture and fit into learning (Important)
+Research Papers	General 
+Research Papers	Yash Linkedin Papers
+Tools	Zapier
+Explore 	"Troubleshooting cookbook 
+Fast mcp 
+
+Normal mcp setup vs fast mcp setup 
+
+Mcp server running : as stdio and streamable http 
+On premis llm "
+Explore	"Praveen new course on deployemnt etc : generative-and-agentic-ai-in-production
+
+Llm optimization + Hosting
+Ai coach john "
+Explore	"Together AI 
+Agents swarm 
+Data analysis agent with ml capability 
+
+Data briks mosaic 
+Data briks gene assistant "
+Explore and Execute 	Doing ml projects using agents 
+Explore	Json rpc 2.0
+Explore	Anti gravity 
+Explore	Cipilot with claude llm
+Basic	All Authorization Formats
+Basics	Error Types & Their Solutions (Detailed)
+Basics	Serverless , GPU , increase , decrease everything
